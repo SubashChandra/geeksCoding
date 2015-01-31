@@ -1,12 +1,12 @@
-//given a linked list clone it
-//using arbitary pointer nd inserting duplicate of each node between it nd the next node
-
+//remove duplicates from a unsorted list
+//using hash map
 //O(n) time
-
+//O(n) space
 
 #include<iostream>
 #include<cstdio>
 #include<cstdlib>
+#include<map>
 
 
 using namespace std;
@@ -84,69 +84,38 @@ void deleteList(Listnodeptr *startptr)
 	}
 }
 
-
-//clone a list
-Listnodeptr clone(Listnodeptr start)
+//given an unsorted linked list
+void removeDuplicates(Listnodeptr start)
 {
 	if(start==NULL || start->next==NULL)
-		return start;
+		return;
 
-	
-	Listnodeptr cur,next,newnode;
-	cur=start;
+	map<int,int> m1;
+	map<int,int>::iterator i;
 
-	while(cur!=NULL) //every time create a node nd insert it between teh current node nd the next node
-	{
-		next=cur->next; 
-
-		newnode=(Listnodeptr)malloc(sizeof(Listnode));
-		newnode->data=cur->data;
-		newnode->arbitptr=NULL;
-		
-		
-		cur->next=newnode;
-		newnode->next=next;
-
-		cur=next;
-	}
-
-
-	//now iterate the list nd set the arbit pointers for the new nodes
-
-	cur=start;
-
-	while(cur!=NULL)
-	{
-		next=cur->next->next;
-
-		cur->next->arbitptr=cur->arbitptr->next;
-		cur=next;
-	}
-
-
-	Listnodeptr secondList=start->next; //initialize second list
 	Listnodeptr temp;
-	cur=start;
-	while(cur!=NULL) //now split the list nd update next pointers
+	//insert teh first node data into map
+	m1.insert(pair<int,int>(start->data,1));
+	
+	while(start->next!=NULL)
 	{
-		temp=start->next; //track cloned node
-		next=cur->next->next;
+		i=m1.find(start->next->data);
 
-		cur->next=cur->next->next;
-		if(temp->next)
-			temp->next=temp->next->next;
+		if(i!=m1.end()) //if already present, deleet start->next
+		{
+			temp=start->next;
+			start->next=start->next->next;
+		}
 
-		cur=next;
+		else //isnert, start->next nd move forward
+		{
+			m1.insert(pair<int,int>(start->next->data,1));
+			start=start->next;
+		}
 	}
+		
 
-	//append NULL at the end of clonedlist
-	temp->next=NULL;
-	return secondList;
 }
-
-
-
-
 
 int main()
 {
@@ -166,16 +135,9 @@ int main()
 
 
 	printList(startptr);
-
-	startptr->arbitptr=startptr->next;
-	startptr->next->arbitptr=startptr;
-	Listnodeptr clonedList= clone(startptr);
-
-	printf("original list:\n");
+	removeDuplicates(startptr);
 	printList(startptr);
 
-	printf("cloned list:\n");
-	printList(clonedList);
 
 
 	return 0;

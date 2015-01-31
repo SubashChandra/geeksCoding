@@ -1,8 +1,8 @@
-//given a linked list clone it
-//using arbitary pointer nd inserting duplicate of each node between it nd the next node
+//do a pair wise swap on the linked list
+//iterative approach
 
 //O(n) time
-
+//O(1) space
 
 #include<iostream>
 #include<cstdio>
@@ -85,67 +85,30 @@ void deleteList(Listnodeptr *startptr)
 }
 
 
-//clone a list
-Listnodeptr clone(Listnodeptr start)
+void pairWiseSwap(Listnodeptr *start)
 {
-	if(start==NULL || start->next==NULL)
-		return start;
+	if(*start==NULL || (*start)->next==NULL)
+		return;
 
-	
-	Listnodeptr cur,next,newnode;
-	cur=start;
+	Listnodeptr third,second,cur;
+	cur=*start;
+	*start=(*start)->next; //set the head of list
 
-	while(cur!=NULL) //every time create a node nd insert it between teh current node nd the next node
+	while(cur!=NULL && cur->next!=NULL) //only if there are  2 nodes
 	{
-		next=cur->next; 
+		third=cur->next->next; 
+		second=cur->next; 
+		second->next=cur;
 
-		newnode=(Listnodeptr)malloc(sizeof(Listnode));
-		newnode->data=cur->data;
-		newnode->arbitptr=NULL;
-		
-		
-		cur->next=newnode;
-		newnode->next=next;
+		if(third && third->next) //if fourth node is not null, set next of current to forth
+			cur->next=third->next;
+		else //if forth is null, set necxt of current to third
+			cur->next=third;
 
-		cur=next;
+		cur=third;
+
 	}
-
-
-	//now iterate the list nd set the arbit pointers for the new nodes
-
-	cur=start;
-
-	while(cur!=NULL)
-	{
-		next=cur->next->next;
-
-		cur->next->arbitptr=cur->arbitptr->next;
-		cur=next;
-	}
-
-
-	Listnodeptr secondList=start->next; //initialize second list
-	Listnodeptr temp;
-	cur=start;
-	while(cur!=NULL) //now split the list nd update next pointers
-	{
-		temp=start->next; //track cloned node
-		next=cur->next->next;
-
-		cur->next=cur->next->next;
-		if(temp->next)
-			temp->next=temp->next->next;
-
-		cur=next;
-	}
-
-	//append NULL at the end of clonedlist
-	temp->next=NULL;
-	return secondList;
 }
-
-
-
 
 
 int main()
@@ -166,16 +129,8 @@ int main()
 
 
 	printList(startptr);
-
-	startptr->arbitptr=startptr->next;
-	startptr->next->arbitptr=startptr;
-	Listnodeptr clonedList= clone(startptr);
-
-	printf("original list:\n");
+	pairWiseSwap(&startptr);
 	printList(startptr);
-
-	printf("cloned list:\n");
-	printList(clonedList);
 
 
 	return 0;
