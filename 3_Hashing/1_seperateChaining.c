@@ -141,9 +141,10 @@ int delete(HashTableptr h, int data)
 		{
 			if(pre!=NULL)
 				pre->next=temp->next;
+			else
+				h->table[index]->next=NULL;
 			free(temp);
 
-			h->table[index]->next=NULL;
 			h->table[index]->bcount--;
 			h->count--;
 			return 1;
@@ -205,6 +206,13 @@ int main()
 		insert(h,data);
 		print(h);
 	}
+
+	printf("enter data to delete: ");
+	scanf("%d",&data);
+	delete(h,data);
+	print(h);
+
+
 
 	return 0;
 }
