@@ -2,7 +2,7 @@
 
 //O(1) time per get nd put
 
-#define CAPACITY 10
+#define CAPACITY 10 //cache capacity
 
 #include<cstdio>
 #include<cstdlib>
@@ -118,7 +118,7 @@ void printcdll(Dllnodeptr start)
 		printf("<-%d->",start->key);
 		start=start->next;
 	}while(start!=head);
-	printf("%d\n",start->key);
+	printf("%d\n",start->key); //printing start node to point that this is indeed a circular dll
 
 }
 
@@ -129,7 +129,7 @@ void put(Cirdllptr *start, int data, map<int,Dllnodeptr> *m1)
 	Dllnodeptr nodeAddress;
 	int key;
 	//two cases here if Cirdll is full nd not full
-	if((*start)->count == (*start)->capacity) //if full
+	if((*start)->count == (*start)->capacity) //if full, delete least recently used element
 	{
 		key = deletenode(&((*start)->list));
 		if(key!=-1) //update map
@@ -159,7 +159,7 @@ void move(Cirdllptr *start, Dllnodeptr node)
 	Dllnodeptr head, last;
 
 	head = (*start)->list;
-	if(head==node) //if there is onky one element in the cache nd it is accessed, no need to move
+	if(head==node) //if the node accessed is teh first node , no need to move
 	{
 		return;
 	}
@@ -180,10 +180,6 @@ void move(Cirdllptr *start, Dllnodeptr node)
 		(*start)->list=node; //update list head in cdll
 	}
 }
-
-
-
-	
 
 
 //get data from lru
