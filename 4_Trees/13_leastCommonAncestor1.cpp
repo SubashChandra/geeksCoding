@@ -1,5 +1,5 @@
-
-
+//given two integers, find their least common ancestor in the tree
+//recursive 
 
 #include<cstdio>
 #include<cstdlib>
@@ -122,6 +122,22 @@ void postorder(Bstnodeptr root)
 }
 
 
+//lowest common ancestor recursive
+Bstnodeptr lca(Bstnodeptr root, int x, int y)
+{
+	if(root==NULL)
+		return NULL;
+
+	if(x<root->data && y<root->data) //go left
+		return lca(root->left,x,y);
+
+	else if(x>root->data && y>root->data) //go right
+		return lca(root->right,x,y);
+
+	return root;
+}
+
+
 int main()
 {
 	Bstnodeptr root = NULL;
@@ -139,5 +155,9 @@ int main()
 	printf("preorder: ");
 	preorder(root);
 	printf("\n");
+
+	int x,y;
+	scanf("%d %d",&x,&y);
+	printf("lca is : %d\n",lca(root,x,y)->data);
 	return 0;
 }

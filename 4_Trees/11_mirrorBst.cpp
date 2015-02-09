@@ -1,5 +1,5 @@
-
-
+//given a bst convert it into its mirror image
+//O(n)
 
 #include<cstdio>
 #include<cstdlib>
@@ -121,6 +121,20 @@ void postorder(Bstnodeptr root)
 	printf("%d ",root->data);
 }
 
+//order doesn't matter ie whether u r processing node nd den swapping childs or the other way
+void mirror(Bstnodeptr root)
+{
+	if(root==NULL)
+		return;
+
+	//now swap lefy nd right
+	Bstnodeptr temp=root->left;
+	root->left=root->right;
+	root->right=temp;
+
+	mirror(root->left);
+	mirror(root->right);
+}
 
 int main()
 {
@@ -136,8 +150,15 @@ int main()
 
 		root=insert(root,data);
 	}
-	printf("preorder: ");
+	printf("preorder\n");
 	preorder(root);
 	printf("\n");
+
+	mirror(root);
+
+	printf("preorder\n");
+	preorder(root);
+	printf("\n");
+
 	return 0;
 }

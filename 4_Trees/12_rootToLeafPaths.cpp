@@ -1,5 +1,7 @@
+//given a tree, print root to leaf paths for all teh leafs
+//use nd array nd a index variable
 
-
+#define MAX_LIMIT 100
 
 #include<cstdio>
 #include<cstdlib>
@@ -122,6 +124,32 @@ void postorder(Bstnodeptr root)
 }
 
 
+void printArray(int path[],int len)
+{
+	int i;
+	for(i=0;i<len;i++)
+		printf("%d->",path[i]);
+	printf("NULL\n");
+}
+
+//pritn paths
+void printPaths(Bstnodeptr root, int path[], int len)
+{
+	if(root==NULL)
+		return;
+
+	path[len]=root->data;
+	len++;
+
+	if(root->left==NULL && root->right==NULL) //if leaf is reached
+		printArray(path,len);
+
+	//go recursive
+	printPaths(root->left,path,len);
+	printPaths(root->right,path,len);
+
+}
+
 int main()
 {
 	Bstnodeptr root = NULL;
@@ -136,8 +164,14 @@ int main()
 
 		root=insert(root,data);
 	}
-	printf("preorder: ");
+	printf("preorder:  ");
 	preorder(root);
 	printf("\n");
+
+	int path[MAX_LIMIT];
+	int i=0;
+
+	printPaths(root,path,i);
+
 	return 0;
 }
