@@ -1,6 +1,9 @@
 //given two integers, find their least common ancestor in the tree
 //iterative 
 
+//O(logn) time
+//O(1) space
+
 #include<cstdio>
 #include<cstdlib>
 #include<iostream>

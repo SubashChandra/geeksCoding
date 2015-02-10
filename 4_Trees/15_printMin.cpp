@@ -1,8 +1,9 @@
-//given two integers, find their least common ancestor in the tree
-//recursive 
+//given a binary tree, print min
+//iterative
 
 //O(logn) time
-//O(logn) space (recursion)
+//O(1) space
+
 #include<cstdio>
 #include<cstdlib>
 #include<iostream>
@@ -123,20 +124,16 @@ void postorder(Bstnodeptr root)
 	printf("%d ",root->data);
 }
 
-
-//lowest common ancestor recursive
-Bstnodeptr lca(Bstnodeptr root, int x, int y)
+//iteratibe
+int printMin(Bstnodeptr root)
 {
 	if(root==NULL)
-		return NULL;
+		return -1;
 
-	if(x<root->data && y<root->data) //go left
-		return lca(root->left,x,y);
-
-	else if(x>root->data && y>root->data) //go right
-		return lca(root->right,x,y);
-
-	return root;
+	//itearate to the leftest node
+	while(root->left!=NULL)
+		root=root->left;
+	return root->data;
 }
 
 
@@ -158,8 +155,6 @@ int main()
 	preorder(root);
 	printf("\n");
 
-	int x,y;
-	scanf("%d %d",&x,&y);
-	printf("lca is : %d\n",lca(root,x,y)->data);
+	printf("min is: %d\n",printMin(root));
 	return 0;
 }
