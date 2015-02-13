@@ -1,9 +1,7 @@
-//given a binary tree, find the max width 
-//is the max of widths of all levels
-//use height nd get width of each level
+//print nodes at k distance from root
+//O(n) time
+//O(k) space
 
-//O(n^2) time
-//O(n) space
 
 #include<cstdio>
 #include<cstdlib>
@@ -126,54 +124,21 @@ void postorder(Bstnodeptr root)
 }
 
 
-int maxVal(int a, int b)
-{
-	return a>b?a:b;
-}
-
-
-int height(Bstnodeptr root)
+void printKDist(Bstnodeptr root, int k)
 {
 	if(root==NULL)
-		return 0;
-
-	return maxVal(height(root->left),height(root->right))+1;
-}
-
-//width of a level
-
-int width(Bstnodeptr root, int level)
-{
-	if(root==NULL)
-		return 0;
-	if(level==1) //if found
-		return 1;
-	else //go recursive nd decrement level
-		return width(root->left,level-1)+width(root->right,level-1);
-}
-
-
-
-//maxWidth of a tree
-int maxWidth(Bstnodeptr root)
-{
-	if(root==NULL)
-		return 0;
-
-	int h = height(root);
-	int i;
-
-	int cur,max=0;
-	for(i=1;i<=h;i++)
+		return;
+	
+	if(k==0) //if target node reached
 	{
-		cur=width(root,i);
-
-		if(cur>max)
-			max=cur;
+		printf("%d ",root->data);
+		return;
 	}
-	return max;
-}
 
+	//decrement dist nd go recursive
+	printKDist(root->left,k-1);
+	printKDist(root->right,k-1);
+}
 
 int main()
 {
@@ -193,6 +158,11 @@ int main()
 	preorder(root);
 	printf("\n");
 
-	printf("max Width: %d\n",maxWidth(root));
+	printf("enter k: ");
+	int k;
+	scanf("%d",&k);
+	printKDist(root,k);
+	printf("\n");
+
 	return 0;
 }

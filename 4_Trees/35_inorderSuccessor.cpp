@@ -1,9 +1,6 @@
-//given a binary tree, find the max width 
-//is the max of widths of all levels
-//use height nd get width of each level
+//given a binary tree, find its inorder successor
+//O(n) time
 
-//O(n^2) time
-//O(n) space
 
 #include<cstdio>
 #include<cstdlib>
@@ -126,52 +123,37 @@ void postorder(Bstnodeptr root)
 }
 
 
-int maxVal(int a, int b)
+//get minimum of a tree
+Bstnodeptr getMin(Bstnodeptr root)
 {
-	return a>b?a:b;
+	while(root->left!=NULL)
+		root=root->left;
+	return root;
 }
 
 
-int height(Bstnodeptr root)
+//inorder successor
+int inorderSuccessor(Bstnodeptr root, int data)
 {
-	if(root==NULL)
-		return 0;
-
-	return maxVal(height(root->left),height(root->right))+1;
-}
-
-//width of a level
-
-int width(Bstnodeptr root, int level)
-{
-	if(root==NULL)
-		return 0;
-	if(level==1) //if found
-		return 1;
-	else //go recursive nd decrement level
-		return width(root->left,level-1)+width(root->right,level-1);
-}
-
-
-
-//maxWidth of a tree
-int maxWidth(Bstnodeptr root)
-{
-	if(root==NULL)
-		return 0;
-
-	int h = height(root);
-	int i;
-
-	int cur,max=0;
-	for(i=1;i<=h;i++)
+	Bstnodeptr succ=NULL;
+	while(root)
 	{
-		cur=width(root,i);
+		if(data<root->data)
+		{
+			succ=root; //cause we need to tarck the  closest ancestor, whose lift subtree data belongs to, if right node of data is NULL
+			root=root->left;
+		}
+		else if(data>root->data)
+			root=root->right;
 
-		if(cur>max)
-			max=cur;
+		else
+			break;
 	}
-	return max;
+
+	if(root->right) //if node with data has right child
+		return getMin(root->right)->data;
+	else
+		return succ?succ->data:-1; //if data is the rightmost node in the bst, it has no successor
 }
 
 
@@ -193,6 +175,9 @@ int main()
 	preorder(root);
 	printf("\n");
 
-	printf("max Width: %d\n",maxWidth(root));
+	printf("enter data: ");
+	scanf("%d",&data);
+	printf("inorder successor: %d\n",inorderSuccessor(root,data));
+
 	return 0;
 }

@@ -1,9 +1,10 @@
 //given a binary tree, find the max width 
 //is the max of widths of all levels
-//use height nd get width of each level
+//using inorder traversal nd a height array
 
-//O(n^2) time
-//O(n) space
+//O(n) time
+//O(logn) space
+
 
 #include<cstdio>
 #include<cstdlib>
@@ -140,16 +141,16 @@ int height(Bstnodeptr root)
 	return maxVal(height(root->left),height(root->right))+1;
 }
 
-//width of a level
 
-int width(Bstnodeptr root, int level)
+//calc width rec
+void goRecursive(Bstnodeptr root, int count[], int level)
 {
-	if(root==NULL)
-		return 0;
-	if(level==1) //if found
-		return 1;
-	else //go recursive nd decrement level
-		return width(root->left,level-1)+width(root->right,level-1);
+	if(root)
+	{
+		count[level]++; //count teh current node at the current level
+		goRecursive(root->left,count,level+1);
+		goRecursive(root->right,count,level+1);
+	}
 }
 
 
@@ -161,17 +162,23 @@ int maxWidth(Bstnodeptr root)
 		return 0;
 
 	int h = height(root);
-	int i;
+	int *count=(int*)malloc(sizeof(int)*h); //create a array of size h
 
-	int cur,max=0;
-	for(i=1;i<=h;i++)
+	int level=0; //initial level 
+
+	goRecursive(root,count,level); //go recursive in inorder manner nd increment count[level] while traversing
+
+	int ans=0,i;
+	printf("count array: "); //count[0] for level 1, nd so on
+	for(i=0;i<h;i++)
 	{
-		cur=width(root,i);
-
-		if(cur>max)
-			max=cur;
+		printf("%d ",count[i]);
+		if(count[i]>ans)
+			ans=count[i];
 	}
-	return max;
+	printf("\n");
+	return ans;
+
 }
 
 

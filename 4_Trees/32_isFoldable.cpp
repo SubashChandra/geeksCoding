@@ -1,9 +1,7 @@
-//given a binary tree, find the max width 
-//is the max of widths of all levels
-//use height nd get width of each level
+//given a binary tree,check if its foldable
+//O(n) time
+//O(logn) space
 
-//O(n^2) time
-//O(n) space
 
 #include<cstdio>
 #include<cstdlib>
@@ -126,61 +124,31 @@ void postorder(Bstnodeptr root)
 }
 
 
-int maxVal(int a, int b)
+int isFoldable(Bstnodeptr root1, Bstnodeptr root2)
 {
-	return a>b?a:b;
-}
-
-
-int height(Bstnodeptr root)
-{
-	if(root==NULL)
-		return 0;
-
-	return maxVal(height(root->left),height(root->right))+1;
-}
-
-//width of a level
-
-int width(Bstnodeptr root, int level)
-{
-	if(root==NULL)
-		return 0;
-	if(level==1) //if found
+	if(root1==NULL && root2==NULL)
 		return 1;
-	else //go recursive nd decrement level
-		return width(root->left,level-1)+width(root->right,level-1);
+
+	else if((root1==NULL && root2!=NULL) || (root1!=NULL && root2==NULL))
+		return 0;
+	//go recursive
+	return isFoldable(root1->left,root2->right) && isFoldable(root1->right,root2->left);
 }
 
-
-
-//maxWidth of a tree
-int maxWidth(Bstnodeptr root)
+int checkFoldable(Bstnodeptr root)
 {
 	if(root==NULL)
-		return 0;
-
-	int h = height(root);
-	int i;
-
-	int cur,max=0;
-	for(i=1;i<=h;i++)
-	{
-		cur=width(root,i);
-
-		if(cur>max)
-			max=cur;
-	}
-	return max;
+		return 1;
+	else//check if left md right are mirror structures
+		return isFoldable(root->left,root->right);
 }
-
 
 int main()
 {
 	Bstnodeptr root = NULL;
 
 	int data;	
-	printf("enter data or -1 to break ");
+	printf("enter data of root or -1 to break ");
 	while(1)
 	{
 		scanf("%d",&data);
@@ -193,6 +161,8 @@ int main()
 	preorder(root);
 	printf("\n");
 
-	printf("max Width: %d\n",maxWidth(root));
+	
+
+	printf("%s\n",checkFoldable(root)?"foldable":"not foldable");
 	return 0;
 }
