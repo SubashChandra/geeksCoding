@@ -1,3 +1,6 @@
+//given a binary tree, print level of a given element
+//O(n) time
+//O(n) space
 
 #include<cstdio>
 #include<cstdlib>
@@ -74,6 +77,27 @@ void preorder(Bstnodeptr root)
 	preorder(root->right);
 }
 
+//get level ofa given elemnt
+int getLevel(Bstnodeptr root, int data, int level)
+{
+	if(root==NULL)
+		return -1;
+
+	if(root->data==data)
+		return level;
+
+	//else go recursive
+	int ans;
+	ans=getLevel(root->left, data, level+1);
+	if(ans!=-1) //if found
+		return ans;
+
+	else
+		return getLevel(root->right,data,level+1);
+
+} //return 0 if data not found
+
+
 int main()
 {
 	Bstnodeptr root = NULL;
@@ -93,6 +117,16 @@ int main()
 	preorder(root);
 	printf("\n");
 
+	int level=1;
+	while(1)
+	{
+		scanf("%d",&data);
+		if(data==-1)
+			break;
+		level=1;
+		printf("level is %d\n",getLevel(root,data,level));
+
+	}
 
 	return 0;
 }

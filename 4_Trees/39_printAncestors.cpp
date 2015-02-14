@@ -1,3 +1,10 @@
+//given a binary tree, nd a element print its ancestors
+//return true if found, nd on way back check nd print node if elemetn found
+//ancestors wil be printed in reverse way cause of recursion
+//to print ancestors from root to data, keep track using a height sized array
+
+//O(n) time
+//O(n) space (recursion)
 
 #include<cstdio>
 #include<cstdlib>
@@ -74,6 +81,24 @@ void preorder(Bstnodeptr root)
 	preorder(root->right);
 }
 
+int printAnc(Bstnodeptr root, int data)
+{
+	if(root==NULL)
+		return 0;
+
+	if(root->data==data)
+		return 1;
+
+	if(printAnc(root->left,data) || printAnc(root->right,data)) //if found in left or right child, print node
+	{
+		printf("%d ",root->data);
+		return 1;
+	}
+
+	return 0;
+}
+
+
 int main()
 {
 	Bstnodeptr root = NULL;
@@ -93,6 +118,16 @@ int main()
 	preorder(root);
 	printf("\n");
 
+	//print ancestors for the data
+	while(1)
+	{
+		scanf("%d",&data);
+		if(data==-1)
+			break;
+		
+		printf("\n%s\n",printAnc(root,data)?"found":"not found");
+
+	}
 
 	return 0;
 }
