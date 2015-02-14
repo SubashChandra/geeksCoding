@@ -1,3 +1,7 @@
+//check if a given binary tree is a sum tree
+//using sum() func nd checking condition for each node
+
+//O(n^2) time
 
 #include<cstdio>
 #include<cstdlib>
@@ -74,6 +78,30 @@ void preorder(Bstnodeptr root)
 	preorder(root->right);
 }
 
+//calculate sum of all elements
+int sum(Bstnodeptr root)
+{
+	if(root==NULL)
+		return 0;
+
+	return sum(root->left)+sum(root->right)+root->data;
+}
+
+
+//check if a tree is sumtree or not
+int isSumTree(Bstnodeptr root)
+{
+	if(root==NULL ||(root->left==NULL && root->right==NULL))
+		return 1;
+
+	int lsum,rsum;
+
+	lsum = sum(root->left);
+	rsum = sum(root->right);
+
+	return lsum+rsum==root->data && isSumTree(root->left) && isSumTree(root->right);
+}
+
 int main()
 {
 	Bstnodeptr root = NULL;
@@ -83,7 +111,6 @@ int main()
 	printf("tree: ");
 	while(1)
 	{
-		printf("enter data or -1 to exit: ");
 		scanf("%d",&data);
 		if(data==-1)
 			break;
@@ -92,7 +119,8 @@ int main()
 	printf("preorder : ");
 	preorder(root);
 	printf("\n");
-
+	
+	printf("%s\n",isSumTree(root)?"yes":"no");
 
 	return 0;
 }
