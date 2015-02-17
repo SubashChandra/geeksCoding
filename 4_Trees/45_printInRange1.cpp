@@ -1,9 +1,7 @@
-//given a binary tree, find the max width 
-//is the max of widths of all levels
-//using preorder traversal nd a height array
-
+//given a bst, print all elements in the given range in sorted order
+//using inorder traversal, check nd print
 //O(n) time
-//O(logn) space
+//O(logn) sapce (stack)
 
 
 #include<cstdio>
@@ -127,60 +125,16 @@ void postorder(Bstnodeptr root)
 }
 
 
-int maxVal(int a, int b)
-{
-	return a>b?a:b;
-}
-
-
-int height(Bstnodeptr root)
-{
-	if(root==NULL)
-		return 0;
-
-	return maxVal(height(root->left),height(root->right))+1;
-}
-
-
-//calc width rec
-void goRecursive(Bstnodeptr root, int count[], int level)
+void printInRange(Bstnodeptr root, int x, int y)
 {
 	if(root)
 	{
-		count[level]++; //count teh current node at the current level
-		goRecursive(root->left,count,level+1);
-		goRecursive(root->right,count,level+1);
+		printInRange(root->left,x,y);
+		if(root->data >=x && root->data <=y) //print if in range
+			printf("%d ",root->data);
+		printInRange(root->right,x,y);
 	}
 }
-
-
-
-//maxWidth of a tree
-int maxWidth(Bstnodeptr root)
-{
-	if(root==NULL)
-		return 0;
-
-	int h = height(root);
-	int *count=(int*)malloc(sizeof(int)*h); //create a array of size h
-
-	int level=0; //initial level 
-
-	goRecursive(root,count,level); //go recursive in inorder manner nd increment count[level] while traversing
-
-	int ans=0,i;
-	printf("count array: "); //count[0] for level 1, nd so on
-	for(i=0;i<h;i++)
-	{
-		printf("%d ",count[i]);
-		if(count[i]>ans)
-			ans=count[i];
-	}
-	printf("\n");
-	return ans;
-
-}
-
 
 int main()
 {
@@ -200,6 +154,12 @@ int main()
 	preorder(root);
 	printf("\n");
 
-	printf("max Width: %d\n",maxWidth(root));
+	printf("enter range x nd y: ");
+	int x,y;
+	scanf("%d %d",&x,&y);
+	printInRange(root,x,y);
+	printf("\n");
+
+
 	return 0;
 }

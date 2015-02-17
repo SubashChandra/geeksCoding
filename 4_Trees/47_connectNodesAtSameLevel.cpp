@@ -1,22 +1,22 @@
-//given a binary tree, find the max width 
-//is the max of widths of all levels
-//using preorder traversal nd a height array
-
+//using a augmented bst, set level while inseting into queue nd conect nodes if they are of same level
 //O(n) time
-//O(logn) space
+//O(n) space
 
 
 #include<cstdio>
 #include<cstdlib>
 #include<iostream>
+#include<queue>
 
 using namespace std;
 
 struct bstnode
 {
 	int data;
+	int level;
 	struct bstnode *left;
 	struct bstnode *right;
+	struct bstnode *next;
 };
 
 typedef struct bstnode Bstnode;
@@ -33,6 +33,7 @@ Bstnodeptr insert(Bstnodeptr root, int data)
 		newnode->data=data;
 		newnode->left=NULL;
 		newnode->right=NULL;
+		newnode->next=NULL;
 		root = newnode;
 	}
 
@@ -127,67 +128,93 @@ void postorder(Bstnodeptr root)
 }
 
 
-int maxVal(int a, int b)
-{
-	return a>b?a:b;
-}
-
-
-int height(Bstnodeptr root)
+//level order tarversal
+void levelorder(Bstnodeptr root)
 {
 	if(root==NULL)
-		return 0;
+	{
+		printf("empty tree\n");
+		return;
+	}
+	
+	queue<Bstnodeptr> q1;
+	q1.push(root); //push root
 
-	return maxVal(height(root->left),height(root->right))+1;
+	while(q1.size()!=0) //while not empty, pop nd print the front node of queue nd push its left nd right childs if any
+	{
+		root=q1.front(); 
+		q1.pop();
+		printf("%d ",root->data);
+
+		if(root->left)
+			q1.push(root->left);
+
+		if(root->right)
+			q1.push(root->right);
+	}
 }
 
-
-//calc width rec
-void goRecursive(Bstnodeptr root, int count[], int level)
+void setNextPointer(Bstnodeptr root)
 {
-	if(root)
+	queue<Bstnodeptr> q;
+	Bstnodeptr next;
+	root->level=1;
+	q.push(root);
+
+	while(q.size()!=0)
 	{
-		count[level]++; //count teh current node at the current level
-		goRecursive(root->left,count,level+1);
-		goRecursive(root->right,count,level+1);
+		root=q.front();
+		q.pop();
+
+		//process cur node
+		if(root->left)
+		{
+			root->left->level=root->level+1;
+			q.push(root->left);
+		}
+		if(root->right)
+		{
+			root->right->level=root->level+1;
+			q.push(root->right);
+		}
+
+		if(q.size()!=0 && q.front()->level == root->level) //if element exists after cuurent ndoe nd is of same level
+		{
+			root->next=q.front();
+		}
+		else
+			root->next=NULL;
 	}
 }
 
 
-
-//maxWidth of a tree
-int maxWidth(Bstnodeptr root)
+//print tree using only next pointers
+void printTree(Bstnodeptr root)
 {
-	if(root==NULL)
-		return 0;
-
-	int h = height(root);
-	int *count=(int*)malloc(sizeof(int)*h); //create a array of size h
-
-	int level=0; //initial level 
-
-	goRecursive(root,count,level); //go recursive in inorder manner nd increment count[level] while traversing
-
-	int ans=0,i;
-	printf("count array: "); //count[0] for level 1, nd so on
-	for(i=0;i<h;i++)
+	Bstnodeptr cur;
+	while(root)
 	{
-		printf("%d ",count[i]);
-		if(count[i]>ans)
-			ans=count[i];
+		cur=root;
+		while(cur!=NULL) //print nodes at currnt level
+		{
+			printf("%d->",cur->data);
+			cur=cur->next;
+		}
+		printf("NULL\n");
+		root=root->left;
 	}
-	printf("\n");
-	return ans;
-
 }
+	
 
 
 int main()
 {
 	Bstnodeptr root = NULL;
 
-	int data;	
-	printf("enter data or -1 to break ");
+	int data;
+	
+	
+	printf("enter data to insertor -1: ");
 	while(1)
 	{
 		scanf("%d",&data);
@@ -196,10 +223,12 @@ int main()
 
 		root=insert(root,data);
 	}
-	printf("preorder: ");
 	preorder(root);
 	printf("\n");
 
-	printf("max Width: %d\n",maxWidth(root));
+	setNextPointer(root);
+
+	printTree(root);
+
 	return 0;
 }

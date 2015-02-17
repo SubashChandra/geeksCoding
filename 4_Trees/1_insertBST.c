@@ -42,7 +42,6 @@ Bstnodeptr insert(Bstnodeptr root, int data)
 	return root;
 }
 
-
 //inorder traversal of a tree
 void inorder(Bstnodeptr root)
 {
