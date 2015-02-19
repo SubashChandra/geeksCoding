@@ -1,12 +1,14 @@
-//using level order traversal nd using NULL to seperate levels
+//given a bst, set inorder successor for all nodes
+//using reverse inorder nd keeing track of las visited node
 //O(n) time
-//O(n) space
+//(logn) space (recursion)
+
+
 
 
 #include<cstdio>
 #include<cstdlib>
 #include<iostream>
-#include<queue>
 
 using namespace std;
 
@@ -32,7 +34,6 @@ Bstnodeptr insert(Bstnodeptr root, int data)
 		newnode->data=data;
 		newnode->left=NULL;
 		newnode->right=NULL;
-		newnode->next=NULL;
 		root = newnode;
 	}
 
@@ -127,93 +128,48 @@ void postorder(Bstnodeptr root)
 }
 
 
-//level order tarversal
-void levelorder(Bstnodeptr root)
+//set inorder successors for all nodes
+void setInorderSucc(Bstnodeptr root) //reverse inorder
 {
-	if(root==NULL)
+	static Bstnodeptr next= NULL; //keep track of last visited node
+	if(root)
 	{
-		printf("empty tree\n");
-		return;
-	}
-	
-	queue<Bstnodeptr> q1;
-	q1.push(root); //push root
+		setInorderSucc(root->right);
 
-	while(q1.size()!=0) //while not empty, pop nd print the front node of queue nd push its left nd right childs if any
-	{
-		root=q1.front(); 
-		q1.pop();
-		printf("%d ",root->data);
+		root->next=next;
+		next=root;
 
-		if(root->left)
-			q1.push(root->left);
-
-		if(root->right)
-			q1.push(root->right);
+		setInorderSucc(root->left);
 	}
 }
 
-//using NULL to seperate levels
-void setNextPointer(Bstnodeptr root)
+//print tree using inorder succssor links
+void printTree(Bstnodeptr root)
 {
 	if(root==NULL)
 		return;
 
-	queue<Bstnodeptr> q;
-	q.push(root);
-	q.push(NULL);
+	while(root->left) //start node of inorder
+		root=root->left;
 
-	while(q.size()!=0)
+	//now print list
+	while(root!=NULL)
 	{
-		root=q.front();
-		q.pop();
-
-		if(root==NULL) //ignore or insert NULL
-		{
-			if(q.size()!=0) //insert NULL to diff levels only if q is not empty
-				q.push(NULL);
-			continue;
-		}
-
-		if(root->left)
-			q.push(root->left);
-		if(root->right)
-			q.push(root->right);
-
-		root->next=q.front(); //point to top of queue, either a node or NULL
+		printf("%d ",root->data);
+		root=root->next;
 	}
 
 	printf("\n");
 }
 
 
-//print tree using only next pointers
-void printTree(Bstnodeptr root)
-{
-	Bstnodeptr cur;
-	while(root)
-	{
-		cur=root;
-		while(cur!=NULL) //print nodes at currnt level
-		{
-			printf("%d->",cur->data);
-			cur=cur->next;
-		}
-		printf("NULL\n");
-		root=root->left;
-	}
-}
-	
-
 
 int main()
 {
 	Bstnodeptr root = NULL;
 
-	int data;
-	
-	
-	printf("enter data to insertor -1: ");
+	int data;	
+	printf("enter data or -1 to break ");
 	while(1)
 	{
 		scanf("%d",&data);
@@ -222,12 +178,13 @@ int main()
 
 		root=insert(root,data);
 	}
+	printf("preorder: ");
 	preorder(root);
 	printf("\n");
 
-	setNextPointer(root);
-
+	setInorderSucc(root);
 	printTree(root);
+	printf("\n");
 
 	return 0;
 }
