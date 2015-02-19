@@ -75,7 +75,7 @@ Bstnodeptr deletenode(Bstnodeptr root, int data)
 			root->data = temp->data;
 			root->left = deletenode(root->left,root->data);
 		}
-		else //only one child
+		else // one or no child
 		{
 			temp=root;
 			if(root->left==NULL)
