@@ -66,7 +66,7 @@ void initialize(Trieptr *atrie)
 
 
 //if key is present as prefix of some exiting key, set last node of key as leaf, else create nodes nd set leaf node
-Trieptr insert(Trieptr atrie, char key[])
+void insert(Trieptr atrie, char key[])
 {
 	int level;
 	int length = strlen(key);
@@ -89,7 +89,6 @@ Trieptr insert(Trieptr atrie, char key[])
 
 	//mark last node as leaf
 	node->value = atrie->count;
-	return atrie;
 }
 
 
@@ -137,7 +136,7 @@ int main()
 		{
 			case 1:
 				scanf("%s",key);
-				atrie = insert(atrie, key);
+				insert(atrie, key);
 				printf("%s inserted nd trie size: %d\n",key,atrie->count);
 				break;
 
