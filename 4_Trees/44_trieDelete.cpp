@@ -159,7 +159,7 @@ int deleteHelper(Trienodeptr node, char key[], int level, int len)
 				node->children[index]=NULL;
 
 				//recursively delete eligible nodes
-				return 	(isFree(node) && node->value!=0); //if freenode nd not a leaf node, return 1 to tell the prev func to deletedis node
+				return 	(isFree(node) && node->value==0); //if freenode nd not a leaf node, return 1 to tell the prev func to deletedis node
 
 			}
 		}
@@ -176,7 +176,10 @@ void deleteNode(Trieptr atrie, char key[])
 {
 	int size = strlen(key);
 	if(size>0)
+	{
+		atrie->count--;
 		deleteHelper(atrie->root,key,0,size);
+	}
 }
 
 
