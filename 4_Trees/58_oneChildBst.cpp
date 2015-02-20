@@ -1,7 +1,8 @@
-//given a bst, set inorder successor for all nodes
-//using reverse inorder nd keeing track of las visited node
-//O(n) time
-//(logn) space (recursion)
+//given a bst, check if all its internal nodes are one child
+//doing a traversal nd return true or false
+//(logn) time
+//O(logn) space
+
 
 #include<cstdio>
 #include<cstdlib>
@@ -14,7 +15,6 @@ struct bstnode
 	int data;
 	struct bstnode *left;
 	struct bstnode *right;
-	struct bstnode *next;
 };
 
 typedef struct bstnode Bstnode;
@@ -125,38 +125,20 @@ void postorder(Bstnodeptr root)
 }
 
 
-//set inorder successors for all nodes
-void setInorderSucc(Bstnodeptr root) //reverse inorder
-{
-	static Bstnodeptr next= NULL; //keep track of last visited node
-	if(root)
-	{
-		setInorderSucc(root->right);
-
-		root->next=next;
-		next=root;
-
-		setInorderSucc(root->left);
-	}
-}
-
-//print tree using inorder succssor links
-void printTree(Bstnodeptr root)
+int isOneChildBst(Bstnodeptr root)
 {
 	if(root==NULL)
-		return;
+		return 1;
+	if(root->left==NULL && root->right==NULL)
+		return 1;
 
-	while(root->left) //start node of inorder
-		root=root->left;
-
-	//now print list
-	while(root!=NULL)
-	{
-		printf("%d ",root->data);
-		root=root->next;
-	}
-
-	printf("\n");
+	if(root->left!=NULL && root->right!=NULL)
+		return 0;
+	
+	if(root->left)
+		return isOneChildBst(root->left);
+	else
+		return isOneChildBst(root->right);
 }
 
 
@@ -179,9 +161,7 @@ int main()
 	preorder(root);
 	printf("\n");
 
-	setInorderSucc(root);
-	printTree(root);
-	printf("\n");
+	printf("%s\n",isOneChildBst(root)?"yes":"no");
 
 	return 0;
 }
