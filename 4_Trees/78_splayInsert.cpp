@@ -1,4 +1,6 @@
-//given a splay tree, search for an element in the tree
+//insert  an element in the splay tree
+//isnertion will be at root by splaying
+
 //O(logn) time //first search
 //O(1) time //second dearch
 
@@ -21,31 +23,6 @@ struct bstnode
 typedef struct bstnode Bstnode;
 typedef Bstnode *Bstnodeptr;
 
-
-Bstnodeptr insert(Bstnodeptr root, int data)
-{
-	Bstnodeptr newnode;
-
-	if(root==NULL) //if null 
-	{
-		newnode=(Bstnodeptr)malloc(sizeof(Bstnode));
-		newnode->data=data;
-		newnode->left=NULL;
-		newnode->right=NULL;
-		root = newnode;
-	}
-
-	else if(root->data == data)
-		printf("duplicate\n");
-
-	else if(data <root->data) //go recursive to the left subtree
-		root->left=insert(root->left,data);
-
-	else //go recursive to teh right subtree
-		root->right=insert(root->right,data);
-
-	return root;
-}
 
 Bstnodeptr max(Bstnodeptr root)
 {
@@ -213,6 +190,49 @@ Bstnodeptr search(Bstnodeptr root, int data)
 	return splay(root, data);
 }
 
+
+
+Bstnodeptr newnode(int data)
+{
+	Bstnodeptr temp=(Bstnodeptr)malloc(sizeof(Bstnode));
+	temp->data=data;
+	temp->left=NULL;
+	temp->right=NULL;
+
+	return temp;
+}
+
+Bstnodeptr insert(Bstnodeptr root, int data)
+{
+	if(root==NULL)
+		return newnode(data);
+
+	root = splay(root,data); //splay for the data
+	if(root->data==data) //duplicate, already present
+		return root;
+	
+	Bstnodeptr temp=newnode(data);
+
+	if(data<root->data) // make root right child nd soon
+	{
+		temp->right=root;
+		temp->left=root->left;
+		root->left=NULL;
+	}
+	else if(data>root->data) //make root left child nd soon
+	{
+		temp->left=root;
+		temp->right=root->right;
+		root->right=NULL;
+	}
+
+	return temp;
+}
+
+
+
+
+
 int main()
 {
 	Bstnodeptr root = NULL;
@@ -226,14 +246,14 @@ int main()
 			break;
 
 		root=insert(root,data);
-	}
-	printf("inorder: ");
-	inorder(root);
-	printf("\n");
-	printf("preorder: ");
-	preorder(root);
-	printf("\n");
+		printf("inorder: ");
+		inorder(root);
+		printf("\n");
+		printf("preorder: ");
+		preorder(root);
+		printf("\n");
 
+	}
 	while(1)
 	{
 		scanf("%d",&data);
