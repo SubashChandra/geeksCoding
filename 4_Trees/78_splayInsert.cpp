@@ -202,6 +202,7 @@ Bstnodeptr newnode(int data)
 	return temp;
 }
 
+//splay insert into the tree
 Bstnodeptr insert(Bstnodeptr root, int data)
 {
 	if(root==NULL)
@@ -228,9 +229,6 @@ Bstnodeptr insert(Bstnodeptr root, int data)
 
 	return temp;
 }
-
-
-
 
 
 int main()
