@@ -9,7 +9,7 @@ void bubbleSort(int arr[], int n)
 	int pass,i,temp;
 	//to prevent taking O(n2) even in best case use a flag to check if swapping is done, nd stop if spapping is not done
 	int flag=1;
-	for(pass=n-1;pass>=0 && flag;pass--)
+	for(pass=n-1;pass>0 && flag;pass--)
 	{
 		flag=0; //deset flag nd set only if there is a swap
 		for(i=0;i<pass;i++)
