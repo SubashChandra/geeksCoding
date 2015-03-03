@@ -11,6 +11,7 @@ using namespace std;
 int main()
 {
 	stack<int> s1;
+	stack<int>::iterator i;
 	
 	int data;
 
@@ -21,7 +22,7 @@ int main()
 			break;
 		s1.push(data);
 	}
-
+/*
 	printf("now poping all the elements of the stack:\n");
 	while(s1.size()!=0)
 	{
@@ -30,6 +31,10 @@ int main()
 	}
 
 	printf("\n");
+*/
+	for(i=s1.top();i!=s1.end();i++)
+		printf("%d ",*i);
+
 	return 0;
 }
 	

@@ -26,6 +26,11 @@ int main()
 	for(i=0;i<v.size();i++)
 		printf("%d ",v[i]);
 	printf("\n");
+	
+	sort(v.begin(),v.end());
 
+	for(i=0;i<v.size();i++)
+		printf("%d ",v[i]);
+	printf("\n");
 	return 0;
 }
