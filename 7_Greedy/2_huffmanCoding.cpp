@@ -1,4 +1,5 @@
 //huffman coding
+//O(nlogn) time
 
 
 #include<cstdio>
@@ -66,7 +67,7 @@ void swapNodes(Heapnodeptr *a, Heapnodeptr *b)
 }
 
 
-//minHeapify function
+//minHeapify function (percolate down)
 void minheapify(Minheapptr minHeap, int index)
 {
 	int smallest=index;
@@ -110,21 +111,21 @@ Heapnodeptr extractMin(Minheapptr minHeap)
 	return temp;
 }
 
-//insert node into minHeap
-void insert(Minheapptr *minHeap, Heapnodeptr node)
+//insert node into minHeap (percolate up)
+void insert(Minheapptr minHeap, Heapnodeptr node)
 {
-	(*minHeap)->size++;
-	int i=(*minHeap)->size-1;
+	(minHeap)->size++;
+	int i=(minHeap)->size-1;
 
-	while(i>0 && node->freq < (*minHeap)->array[(i-1)/2]->freq)
+	while(i>0 && node->freq < (minHeap)->array[(i-1)/2]->freq)
 	{
-		(*minHeap)->array[i]=(*minHeap)->array[(i-1)/2];
+		(minHeap)->array[i]=(minHeap)->array[(i-1)/2];
 		i=(i-1)/2;
 	}
-	(*minHeap)->array[i]=node;
+	(minHeap)->array[i]=node;
 }
 
-//standard func to build minHeap
+//standard func to build minHeap, will percolate down till the penultimate level, so the result is minHeap
 void buildMinHeap(Minheapptr minHeap)
 {
 	int n=minHeap->size-1;
@@ -185,7 +186,7 @@ Heapnodeptr buildHuffmanTree(char data[], int freq[], int size)
 		top=newnode('#',left->freq+right->freq);
 		top->left=left;
 		top->right=right;
-		insert(&minHeap,top);
+		insert(minHeap,top);
 	}
 
 	return extractMin(minHeap);
