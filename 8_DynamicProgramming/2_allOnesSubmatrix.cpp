@@ -1,6 +1,6 @@
 //given a matrix, print the max square summatrix with all ones
-//O(n^2) time
-//O(1) spaxce
+//O(mn) time
+//O(mn) spaxce
 
 
 #include<cstdio>
@@ -66,9 +66,6 @@ void printSubarray(int **arr,int m, int n)
 		}
 		printf("\n");
 	}
-
-
-
 
 }
 
