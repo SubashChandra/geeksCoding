@@ -1,6 +1,7 @@
 //given a cost matrix nd position, find the mincost path from (0,0) to (m,n)
 //tabulation (bottom up)
-//O
+//O(mn) time
+//O(mn) space
 
 
 #include<cstdio>
