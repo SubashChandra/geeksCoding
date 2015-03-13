@@ -28,6 +28,34 @@ Graphptr create(int v)
 	return g;
 }
 
+void dfsUtil(Graphptr g, int v, bool visited[])
+{
+	visited[v]=true;
+	cout<<v<<" ";
+
+	//recur for all the vertices adjacent to this vertex
+	list<int>::iterator it;
+
+	for(it=g->adj[v].begin();it!=g->adj[v].end();it++) //all teh vertices adjacent to v
+	{
+		if(visited[*it]==0) //if not visited
+		{
+			dfsUtil(g,*it,visited);
+		}
+	}
+}
+
+
+void dfs(Graphptr g,int v)
+{
+	bool *visited=new bool[g->v];
+	int i;
+	for(i=0;i<g->v;i++)
+		visited[i]=false;
+
+	dfsUtil(g,v,visited);
+}
+
 
 int main()
 {
@@ -57,6 +85,10 @@ int main()
 			printf("%d ",*it);
 		printf("\n");
 	}
+
+	printf("dfs: ");
+	dfs(g,0);//dfs starting at vertex 2
+	printf("\n");
 	return 0;
 }
 			
