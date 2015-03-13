@@ -76,7 +76,7 @@ int main()
 	printf("now display graph:\n");
 
 	list<int>::iterator it;
-	for(i=0;i<v;i++)
+	for(i=0;i<g->v;i++)
 	{
 		if(g->adj[i].size()==0)
 			continue;
