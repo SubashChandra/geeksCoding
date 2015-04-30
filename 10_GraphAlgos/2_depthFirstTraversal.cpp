@@ -1,5 +1,8 @@
 //depth first traversal uisng adjacency lists
 
+//O(v) time
+//O(v+e) sapce
+
 
 #include<iostream>
 #include<cstdio>
